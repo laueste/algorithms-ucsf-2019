@@ -39,7 +39,8 @@ def quicksort(x):
         return x
     else:
         pivot = x[0]
-        lt,gt = np.array([])
+        lt = np.array([])
+        gt = np.array([])
         for n in x[1:]:
             if n < pivot:
                 lt = np.append(lt,n)
