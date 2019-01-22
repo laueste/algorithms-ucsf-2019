@@ -25,7 +25,7 @@ def bubblesort(x):
     ## Number of Assignments:
     ## O(N^2)  (x, n*N, i*N*N-1)
     ## Number of Conditionals:
-    ## O(N^2)  (pairwise comparison)*N*N-1
+    ## O(N^2)  (pairwise comparison ln20)*N*N-1
 
 def quicksort(x):
     """
@@ -49,4 +49,4 @@ def quicksort(x):
     ## Number of Assignments:
     ##  O(NlogN)  ((x, pivot, lt*N, gt*N, n*N) * logN)
     ## Number of Conditionals:
-    ##  O(NlogN)   (base case)*logN, (partition)*N*logN
+    ##  O(NlogN)   (base case ln38)*logN, (partition ln44)*N*logN
