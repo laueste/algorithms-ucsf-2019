@@ -20,12 +20,25 @@ def test_bubblesort():
     # think about: (1) does your code handle 0-element arrays without
     # failing, (2) does your code handle characters?
 
+    # test odd entries
+    x = np.array([1000,2,48,234,789])
+    assert np.array_equal(algs.bubblesort(x),np.array([2,48,234,789,1000]))
+
+    # test even entries
+    x = np.array([1000,2,48,234,789,3])
+    assert np.array_equal(algs.bubblesort(x),np.array([2,3,48,234,789,1000]))
+
+    # test repeated entries
     x = np.array([1,2,4,0,1])
     assert np.array_equal(algs.bubblesort(x),np.array([0,1,1,2,4]))
 
     # check that the zero-length vector produces a reasonable output
     x = np.array([])
     assert np.array_equal(algs.bubblesort(x),np.array([]))
+
+    # test 1-length vector
+    x = np.array([5])
+    assert np.array_equal(algs.bubblesort(x),np.array([5]))
 
     # test character arrays, which should (according to python < / > rules)
     # be put into alphabetical order (uppercase first)
@@ -52,4 +65,3 @@ def test_quicksort():
     x = np.array(['a','b','z','y','C'])
     assert np.array_equal(algs.quicksort(x),np.array(['C','a','b','y','z']))
     x = np.array([1,2,4,0,1])
-    

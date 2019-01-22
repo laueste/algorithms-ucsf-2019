@@ -21,7 +21,7 @@ branches:
         - master
 
 # install dependencies listed in requirements
-install: "pip install -r requirements.txt"
+install: "pip install -r ./hw1/requirements.txt"
 
 # run tests for hw1
 before-script: cd hw1
