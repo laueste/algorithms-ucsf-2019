@@ -32,6 +32,10 @@ def test_bubblesort():
     x = np.array([1,2,4,0,1])
     assert np.array_equal(algs.bubblesort(x),np.array([0,1,1,2,4]))
 
+    # test multiple different repeats
+    x = np.array([5,7,8,2,1,5,2,2,1,8,5,2])
+    assert np.array_equal(algs.bubblesort(x),np.array([1,1,2,2,2,2,5,5,5,7,8,8]))
+
     # check that the zero-length vector produces a reasonable output
     x = np.array([])
     assert np.array_equal(algs.bubblesort(x),np.array([]))
@@ -53,12 +57,24 @@ def test_quicksort():
     assert np.array_equal(algs.quicksort(x),np.array([6,7,8,9]))
 
     # same but with an odd number of elements
+    x = np.array([9,8,101,7,6])
+    assert np.array_equal(algs.quicksort(x),np.array([6,7,8,9,101]))
+
+    # test repeated elements
     x = np.array([1,2,4,0,1])
     assert np.array_equal(algs.quicksort(x),np.array([0,1,1,2,4]))
+
+    # test multiple different repeats
+    x = np.array([5,7,8,2,1,5,2,2,1,8,5,2])
+    assert np.array_equal(algs.quicksort(x),np.array([1,1,2,2,2,2,5,5,5,7,8,8]))
 
     # check that the zero-length vector produces a reasonable output
     x = np.array([])
     assert np.array_equal(algs.quicksort(x),np.array([]))
+
+    # test 1-length vector
+    x = np.array([5])
+    assert np.array_equal(algs.quicksort(x),np.array([5]))
 
     # test character arrays, which should (according to python < / > rules)
     # be put into alphabetical order (uppercase first)
