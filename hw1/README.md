@@ -3,7 +3,7 @@
 # 1/10/19
 
 [![Build
-Status](https://travis-ci.org/ucsf-bmi-203-2017/example.svg?branch=master)](https://travis-ci.org/laueste/algorithms-ucsf-2019/hw1)
+Status](https://travis-ci.com/laueste/algorithms-ucsf-2019/?branch=master)](https://travis-ci.org/laueste/algorithms-ucsf-2019/hw1)
 
 Contents below the line in this readme are taken entirely from the example file in the ucsf-bmi-203-2017/example github repo
 
