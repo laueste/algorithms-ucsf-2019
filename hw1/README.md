@@ -1,6 +1,5 @@
 # hw1
-# laurel estes
-# 1/10/19
+## laurel estes, 1/25/19
 
 [![Build Status](https://travis-ci.com/laueste/algorithms-ucsf-2019.svg?token=zRpn8zZpP78U6qyaUqA7&branch=master)](https://travis-ci.com/laueste/algorithms-ucsf-2019)
 
