@@ -1,11 +1,9 @@
 # hw1
-# laurel estes
-# 1/10/19
+## laurel estes, 1/25/19
 
-[![Build
-Status](https://travis-ci.org/ucsf-bmi-203-2017/example.svg?branch=master)](https://travis-ci.org/laueste/algorithms-ucsf-2019/hw1)
+[![Build Status](https://travis-ci.com/laueste/algorithms-ucsf-2019.svg?token=zRpn8zZpP78U6qyaUqA7&branch=master)](https://travis-ci.com/laueste/algorithms-ucsf-2019)
 
-Contents below the line in this readme are taken entirely from the example file in the ucsf-bmi-203-2017/example github repo
+Current build status in travis is displayed above. Contents below the line in this readme are taken entirely from the example file in the ucsf-bmi-203-2017/example github repo, and reproduced here for a record of how to run the example on which hw1 was based.
 
 _____________________________________________________________________
 
