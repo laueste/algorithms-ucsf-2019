@@ -1,0 +1,62 @@
+similarity metric thoughts
+
+so trying to reimplement PARIS would be a little nuts
+I would like to have a similarity matrix that takes into account/has some
+relation to the chemical environment of the binding pocket, more than
+evolutionarily conserved structure and stuff
+
+- raw volume is a good metric for making large-scale discriminations (see PARIS)
+- could do a classification of amino acids into chemistry groups,
+and then decide on a weighting somehow (ML?) of location vs similarity of
+chemical properties for atoms nearby?
+- I like the PARIS paper's use of gaussians and overall closeness ish rather
+than counting overlapping atoms
+
+
+Okay, so general strategies
+- so, is there a way to get charge out of the pdb? like, on an atom scale,
+sometimes its the carbons that are relevant, sometimes the O's and sometimes
+the N's
+- on the amino acid scale we can make broad strokes categorizations
+
+
+
+Things I want to take into account:
+- the 3D shape in space of the active site
+- the temperature/uncertainty value of each atom
+- the  electronegativity/chemical properties of atom/immediate environment
+
+
+One way to do this would be to make a 5-element vector with x,y,z, b-factor,
+and pka (and also charge?) for each atom based on like, standard info (ignoring
+interactions with local atoms)
+
+uncertainty would have to be used to somehow scale the weight/stringency on
+the xyz location...?
+
+maybe also the atom itself (N, O, C etc.)
+
+what distance metric makes sense? euclidean? any sort of spatial dilation?
+
+OKAY FOR REAL NOW
+
+Not a lot of time, what simple yet hopefully somewhat theoretically sound
+clustering metrics can we use?
+
+I want to combine three metrics:
+
+1) dimensionality information
+- get difference between max(x for all atoms for all residues) and min(x for
+all atoms for all residues) for each of x,y,z for a total spanning distance
+- get N residues
+- get ratio of span and length
+
+2) circular-aware sequence alignment
+- duplicate one of the sequences to remove origin issues
+(- ideally we could break this into residue cluster similarities rather than
+exact sequence alignment but oh well.)
+
+3) residue composition
+- list of list of floats representing percent amino acids in each "group"
+- [ [nonpolar],[cys],[[polar],[pos],[neg]],[gly,pro]]
+- e.g. [ [40.9],[0.05],[[23],[16],[10]],[0.02,0.03]

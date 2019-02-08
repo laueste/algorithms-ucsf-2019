@@ -39,3 +39,19 @@ class ActiveSite:
     # Overload the __repr__ operator to make printing simpler.
     def __repr__(self):
         return self.name
+
+class Cluster:
+    """
+    A simple class to represent a cluster (can contain one or more
+    ActiveSites or other clusters)
+    """
+    def __init__(self,members=[]):
+        self.members = members
+        self.name = "c" + str(members)
+
+    def __repr__(self):
+        # Overload the __repr__ operator to make printing simpler.
+        return self.name
+
+    def compute_centroid(self):
+        
