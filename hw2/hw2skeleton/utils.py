@@ -35,10 +35,14 @@ class ActiveSite:
     def __init__(self, name):
         self.name = name
         self.residues = []
+        self.dim_coordinates = 0.0 #stores surface-area-to-volume ratio
+        self.chem_coordinates = []
+        self.has_coordinates = False
 
     # Overload the __repr__ operator to make printing simpler.
     def __repr__(self):
         return self.name
+
 
 class Cluster:
     """
@@ -48,10 +52,9 @@ class Cluster:
     def __init__(self,members=[]):
         self.members = members
         self.name = "c" + str(members)
+        self.centroid_coordinates = () # (dim, length, chem)
+        self.has_coordinates = False
 
     def __repr__(self):
         # Overload the __repr__ operator to make printing simpler.
         return self.name
-
-    def compute_centroid(self):
-        

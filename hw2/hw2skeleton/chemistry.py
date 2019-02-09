@@ -11,7 +11,7 @@ def proportion(a,b):
     # the answer is always less than 1
     return np.abs(a-b) / max(a,b)
 
-## DIMENSIONALITY COMPARISONS
+## DIMENSIONALITY CALCULATIONS
 def compute_dimensions(site):
     # take absoute value because we want distances!
     all_atoms = [ np.abs(a.coords) for r in site.residues for a in r.atoms ]
@@ -24,35 +24,7 @@ def compute_sav(dim):
     volume = x*y*z
     return surface_area / volume
 
-def compute_dim_similarity(site_a,site_b):
-    '''returns a floating-point number for a 60-40
-    combination of the similarities between surface-area-
-    to-volume ratio and length for input sites a and b'''
-    # a more sophisticated algorithm would
-    # have a more interesting weighting than 60-40,
-    # but I unfortunately don't have time to do a fun
-    # ML/weight-learning process by friday!
-    # (not using 50-50 because SAV ratio also includes
-    # some information about the total size, since
-    # smaller objects have higher SAV than larger
-    # objects of the same proportion)
-
-    dim_a = compute_dimensions(site_a)
-    dim_b = compute_dimensions(site_b)
-
-    # rather than purely comparing volume, I want to
-    # capture some measure of shape, so let's use
-    # the surface-area-to-volume ratio as well, where
-    # the minimum is spherelike and the max is linear
-    sav_a = compute_sav(dim_a)
-    sav_b = compute_sav(dim_b)
-    len_a = len(site_a.residues)
-    len_b = len(site_b.residues)
-
-    return 0.6*proportion(sav_a,sav_b) + 0.4*proportion(len_a,len_b)
-
-
-## AMINO ACID COMPARISONS
+## AMINO ACID CALCULATIONS
 aas = {
     "ALA":'H', #hydrophobic
     "ILE":'H',
@@ -77,18 +49,71 @@ aas = {
     "PRO":'B'
 }
 
-
 def compute_aa_proportions(site):
     categories = [ aas[r.type] for r in site.residues ]
     counts = [ categories.count(c) for c in ["H","C","P","E","N","B"] ]
     return np.array(counts) / len(site.residues) #normalize
 
+
+## SITE MODIFICATION
+def compute_coordinates(site):
+    '''modifies site in-place to record its relevant metrics that we use
+    for computing site similarity. Returns coordinates also.'''
+    dim = compute_dimensions(site)
+    site.dim_coordinates = compute_sav(dim)
+    site.chem_coordinates = compute_aa_proportions(site) #np.arr of aa %s
+    site.has_coordinates = True
+    return (site.dim_coordinates,site.chem_coordinates)
+
+
+## SIMILARITY COMPUTATIONS
+
+# DIMENSIONS
+def compute_dim_similarity(site_a,site_b):
+    '''returns a floating-point number for a 60-40
+    combination of the similarities between surface-area-
+    to-volume ratio and length for input sites a and b'''
+    # a more sophisticated algorithm would
+    # have a more interesting weighting than 60-40,
+    # but I unfortunately don't have time to do a fun
+    # ML/weight-learning process by friday!
+    # (not using 50-50 because SAV ratio also includes
+    # some information about the total size, since
+    # smaller objects have higher SAV than larger
+    # objects of the same proportion)
+
+    # compute site coordinates if not present
+    if site_a.has_coordinates == False:
+        compute_coordinates(site_a)
+    if site_b.has_coordinates == False:
+        compute_coordinates(site_b)
+
+    sav_a = site_a.dim_coordinates
+    sav_b = site_b.dim_coordinates
+
+    # rather than purely comparing volume, I want to
+    # capture some measure of shape, so let's use
+    # the surface-area-to-volume ratio as well, where
+    # the minimum is spherelike and the max is linear
+    len_a = len(site_a.residues)
+    len_b = len(site_b.residues)
+
+    return 0.6*proportion(sav_a,sav_b) + 0.4*proportion(len_a,len_b)
+
+
+## CHEMICAL COMPOSITION
 def compute_aa_distance(site_a,site_b):
     '''finds the euclidean distance between the two vectors
     formed by the proportions of each amino acid category in
     the site's total composition'''
-    percents_a = compute_aa_proportions(site_a)
-    percents_b = compute_aa_proportions(site_b)
+    # compute site coordinates if needed
+    if site_a.has_coordinates == False:
+        compute_coordinates(site_a)
+    if site_b.has_coordinates == False:
+        compute_coordinates(site_b)
+
+    percents_a = site_a.chem_coordinates
+    percents_b = site_b.chem_coordinates
     dist = np.linalg.norm(percents_a-percents_b)
     #frobenius norm is aka euclidean norm
     return dist
