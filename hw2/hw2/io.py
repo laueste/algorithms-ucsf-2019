@@ -70,7 +70,7 @@ def read_active_site(filepath):
     return active_site
 
 
-def write_clustering(filename, clusters):
+def write_clustering(filename, clusters, quality=''):
     """
     Write the clustered ActiveSite instances out to a file.
 
@@ -80,6 +80,9 @@ def write_clustering(filename, clusters):
 
     out = open(filename, 'w')
 
+    out.write("- Quality Score: Mean Intra/Inter Cluster Similarity -\n")
+    out.write("\t%s" % quality )
+
     for i in range(len(clusters)):
         out.write("\nCluster %d\n--------------\n" % i)
         for j in range(len(clusters[i])):
@@ -88,22 +91,27 @@ def write_clustering(filename, clusters):
     out.close()
 
 
-def write_mult_clusterings(filename, clusterings):
+def write_mult_clusterings(filename, clusterings, qualities, comparison_data):
     """
     Write a series of clusterings of ActiveSite instances out to a file.
 
-    Input: a filename and a list of clusterings of ActiveSite instances
+    Input: a filename, a list of clusterings of ActiveSite instances, a list
+           of quality scores for each clustering, and comparison data to record
     Output: none
     """
 
     out = open(filename, 'w')
-
     for i in range(len(clusterings)):
         clusters = clusterings[i]
-
+        out.write("\n*** CLUSTERING %d ***\n" % i)
+        out.write("Quality Score: %s \n" % qualities[i])
         for j in range(len(clusters)):
             out.write("\nCluster %d\n------------\n" % j)
             for k in range(len(clusters[j])):
                 out.write("%s\n" % clusters[j][k])
+
+    out.write("\n*** COMPARISION ***\n")
+    out.write("Lengths of Clusters: %s \n" % comparison_data[0])
+    out.write("Sites Shared in Clusters:\n %s " % comparison_data[1])
 
     out.close()

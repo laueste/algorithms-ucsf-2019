@@ -126,3 +126,23 @@ def compute_aa_similarity(site_a,site_b):
     max_euclidean_dist = 1.4142135623731
     #computed by np.linalg.norm(np.array([1,0,0,0,0,0],np.array([0,1,0,0,0,0])))
     return 1 - (compute_aa_distance(site_a,site_b) / max_euclidean_dist)
+
+
+## OVERALL SIMILARITY
+def compute_similarity(site_a, site_b):
+    """
+    Compute the similarity between two given ActiveSite instances.
+
+    Input: two ActiveSite instances
+    Output: the similarity between them (a floating point number)
+    """
+    ## Naively average the similarity values of the dimensions
+    ## and the chemical makeups of the sites to achieve a global
+    ## similarity value.
+    # NOTE: for this data set, dim similarity varies from 0 to 0.89
+    # NOTE: for this data set, chem similarity varies from 0.14 to 1.0
+    # (see histograms of similarity value distributions)
+
+    chem_similarity = compute_aa_similarity(site_a,site_b)
+    dim_similarity = compute_dim_similarity(site_a,site_b)
+    return (chem_similarity + dim_similarity) * 0.5

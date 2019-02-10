@@ -1,26 +1,10 @@
 import numpy as np
 import pandas as pd
 from .utils import Atom, Residue, ActiveSite, Cluster
-from .chemistry import compute_aa_similarity, compute_dim_similarity, compute_coordinates
+from .chemistry import compute_similarity, compute_coordinates
 from .centroids import make_centroid_site
-
-def compute_similarity(site_a, site_b):
-    """
-    Compute the similarity between two given ActiveSite instances.
-
-    Input: two ActiveSite instances
-    Output: the similarity between them (a floating point number)
-    """
-    ## Naively average the similarity values of the dimensions
-    ## and the chemical makeups of the sites to achieve a global
-    ## similarity value.
-    # NOTE: for this data set, dim similarity varies from 0 to 0.89
-    # NOTE: for this data set, chem similarity varies from 0.14 to 1.0
-    # (see histograms of similarity value distributions)
-
-    chem_similarity = compute_aa_similarity(site_a,site_b)
-    dim_similarity = compute_dim_similarity(site_a,site_b)
-    return (chem_similarity + dim_similarity) * 0.5
+from .graphing import plot_pca_clusters
+from .evaluation import compute_cluster_similarity,quality_score
 
 ## PARTITIONING CLUSTERING
 
@@ -74,7 +58,7 @@ def test_convergence(old_centroids,new_centroids,threshold_distance,prev_distanc
     zipped = zip(sorted(old_centroids,key=lambda c:c.name),sorted(new_centroids,key=lambda c:c.name))
     pairwise_distances = [compute_site_distance(old,new) for old,new in zipped]
     new_dist = min(pairwise_distances)
-    print(new_dist,threshold_distance,prev_distance)
+    #print(new_dist,threshold_distance,prev_distance)
     if new_dist < threshold_distance or new_dist == prev_distance:
         return (True,new_dist)
     else:
@@ -109,9 +93,11 @@ def cluster_by_partitioning(active_sites,k=25,t=1.0):
         new_centroids,cluster_lists = recompute_centroids(cluster_dict)
         convergence = test_convergence(centroids,new_centroids,
             threshold_distance=t,prev_distance=convergence[1])
-        # ideally would implement a way to check for lack of change in the
     print("finished with iterations", iterations)
-    return cluster_lists
+    intra_distances = compute_cluster_similarity(cluster_lists)
+    inter_distance = compute_cluster_similarity([new_centroids])[0]
+    plot_pca_clusters(active_sites,cluster_lists,type='Partitioning')
+    return cluster_lists,quality_score(intra_distances,inter_distance)
 
 
 
@@ -129,16 +115,15 @@ def compute_cluster_distance(cluster_x,cluster_y):
 
 ##              GRAPH UTILITIES
 #(aka more complex code to avoid remaking the distance graph entirely each time)
-def graph_clusters(cluster_list,method):
+def graph_clusters(cluster_list):
     '''creates a dictionary of form cluster_name:[ (cluster_a_name,dist_to_a),
     (cluster_b_name,dist_to_b),...] for all the clusters in the input list.'''
     #print('making initial graph')
-    dist_alg = compute_cluster_distance if method == "H" else compute_site_distance
     graph = {c:[] for c in cluster_list}
     for i in range(len(cluster_list)):
         cluster_a = cluster_list[i]
         for cluster_b in cluster_list[i+1:]:
-            distance_ab = dist_alg(cluster_a,cluster_b)
+            distance_ab = compute_cluster_distance(cluster_a,cluster_b)
             graph[cluster_a].append((cluster_b,distance_ab))
             graph[cluster_b].append((cluster_a,distance_ab))
     return graph
@@ -231,7 +216,15 @@ def cluster_hierarchically(active_sites,k=3,t=10000):
     graph = graph_clusters(clusters)
     while len(graph) > k:
         merge_closest_clusters(graph,t=t)
-    # keep this dendrogram around so that we have the option to return it someday
-    dendrogram = [ de_cluster(c) for c in list(graph.keys()) ] #dendrogram up to k clusters
+
+    # keep this dendrogram around so that we have the option to return it someday...
+    dendrogram = [ de_cluster(c) for c in graph.keys() ] #dendrogram up to k clusters
     clusters = [ flatten(clist) for clist in dendrogram ]
-    return [clusters]
+    intra_distances = compute_cluster_similarity(clusters)
+    # create centroid ActiveSites for each Cluster object to compute distances.
+    # really, this information is already embedded in the graph, but we're
+    # re-using the method from above in order to save time writing code.
+    centroids = [ make_centroid_site(c) for c in graph.keys()]
+    inter_distance = compute_cluster_similarity([centroids])[0]
+    plot_pca_clusters(active_sites,clusters,type='Hierarchical')
+    return clusters,quality_score(intra_distances,inter_distance)
