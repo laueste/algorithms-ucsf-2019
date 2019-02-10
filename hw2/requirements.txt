@@ -3,6 +3,7 @@
 # platform: osx-64
 scipy>=0.18.1
 numpy>=1.11.2
+pandas>=0.24.1
 pytest>=3.0
 
 # These are from
