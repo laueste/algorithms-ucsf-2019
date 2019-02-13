@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1549792455 "writeup2.tex" "writeup2.pdf" "writeup2" 1549792457
+["pdflatex"] 1549792455 "writeup2.tex" "writeup2.pdf" "writeup2" 1549794454
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1480098701 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1480098701 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -67,9 +67,9 @@
   "unicorn.png" 1549786440 61300 03bc6b340d50f86b8c220b821b86afeb ""
   "writeup2.aux" 1549792457 1497 43bd287e7c9ac2070ef059ca0494bf5a ""
   "writeup2.out" 1549792457 555 1408268412fc0b97e197719b4c27cbf3 ""
-  "writeup2.tex" 1549792451 11897 d27e32220fa0dadc5bdf68011ccdb9f9 ""
+  "writeup2.tex" 1549794453 11897 d27e32220fa0dadc5bdf68011ccdb9f9 ""
   (generated)
   "writeup2.aux"
-  "writeup2.out"
-  "writeup2.log"
   "writeup2.pdf"
+  "writeup2.log"
+  "writeup2.out"
