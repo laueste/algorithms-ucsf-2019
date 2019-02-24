@@ -1,0 +1,8 @@
+Query: Query 
+Target: Target 
+Scoring Matrix: BLOSUM50 
+Score: 22 
+Alignment, Target on top and Query below: 
+K K A A T A A T 
+          | | | 
+Q Q - - C A A T 

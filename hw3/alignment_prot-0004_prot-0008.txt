@@ -1,0 +1,8 @@
+Query: prot-0004 
+Target: prot-0008 
+Scoring Matrix: BLOSUM50 
+Score: 52 
+Alignment, Target on top and Query below: 
+- - L - D R - - H A - - - R D H V H M P - P E V W - T D F - - - - - W - K L F E E Y L G K - K T T L D - - - E - P - T - K Q A W H E I G R E F A K E I 
+                                            |           |                           |             |                         | |                   | | 
+Q A Q S F K G L V S N W V D N L D N A G A L E G Q C K T F A A N H K A R G I S A G Q L E A A F K V L S G F M K S Y G G D E G A W T A V A G A L M G E I 

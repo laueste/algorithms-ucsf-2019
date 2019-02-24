@@ -1,0 +1,10 @@
+\BOOKMARK [1][-]{section.1}{Part I: Implementing Smith-Waterman and Evaluating Scoring Matrices}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Smith-Waterman Implementation}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Optimal Gap Penalties for BLOSUM50}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{ROC Graphs for Provided Matrices}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Normalizing Smith-Waterman Scores by Length}{section.1}% 5
+\BOOKMARK [1][-]{section.2}{Part II: Optimizing Scoring Matrices}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{Optimization Algorithm}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.2}{Improvements to BLOSUM50}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Improvements to MATIO}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Github Repository}{}% 10
