@@ -115,7 +115,7 @@ def write_alignment(filename,query_name,target_name,scoring_name,score,alignment
 
 def write_matrix(filename,matrix,changes='',base_matrix_name=''):
     """Write the input scoring matrix to a file to save its contents"""
-    out = open(filename,'w')
+    out = open(filename+'.txt','w')
     header = 'A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  Z  X  *'
     index = header.replace(" ","")
     out.write('# Output Matrix')

@@ -1,5 +1,6 @@
 # optimize a matrix dynamically for maximum TP rate at the lowest FP rates
 import numpy as np
+import random
 from .truefalse import calculate_true_positive_rate
 from .align import rescore_alignment
 
@@ -86,6 +87,8 @@ def updown_iteration(upreg_library,downreg_library,pos_align,neg_align,
     """"""
     best_upreg = np.zeros(best_cutoff,dtype=(int,2)) # (score,index)
     best_downreg = np.zeros(best_cutoff,dtype=(int,2)) # (score,index)
+    random.shuffle(upreg_library)
+    random.shuffle(downreg_library)
     for i,m_entry in enumerate(upreg_library):
         m,changes = m_entry
         score = test_matrix_scores(m,pos_align,neg_align)
@@ -108,19 +111,6 @@ def updown_iteration(upreg_library,downreg_library,pos_align,neg_align,
         print(p)
 
     return best_upreg_changes,best_downreg_changes
-
-
-def test_optimization(score_matrix,pos_alignments,neg_alignments,best_cutoff=3,
-                        step_frac=0.5,total_iterations=2,merge_iterations=2):
-    score = 0
-    matrix = score_matrix
-    upreg_library = create_matrix_library(matrix,upreg=True)
-    downreg_library = create_matrix_library(matrix,upreg=False)
-    best_up,best_down = updown_iteration(upreg_library,downreg_library,pos_alignments,neg_alignments,best_cutoff=best_cutoff)
-    print(best_up)
-    print(best_down)
-    m = merge_iteration(matrix,best_up+best_down,pos_alignments,neg_alignments,best_cutoff=best_cutoff)
-    print(m)
 
 
 

@@ -61,13 +61,19 @@ For my optimization algorithm, I implemented a variation on a genetic algorithm,
 \par One drawback to this method is that the changes are always inherited as a single block: as one single ``chromosome'', in effect, with no crossing over. One could imagine a model where only some of the changes from each parent were transmitted, in a manner that still allowed for the total number of changes to increase or decrease. Also, in the current implementation, the step size is constant throughout the procedure; methods such as simulated annealing strongly suggest that the step size should decrease as the number of iterations increases, to allow the optimization to settle into the maximum instead of bouncing around it.
 
 \subsection{Improvements to BLOSUM50}
-The BLOSUM50 matrix starts out with an objective function score of []. Using my optimization algorithm ...
-Repeating it with 10 global rounds, 3 merge iterations for each global round, a scale factor of 0.2, and a best subset size of 10 matricies also notably resulted in a best matrix with a score of only 2.0 out of 4. 
+The BLOSUM50 matrix starts out with an objective function score of 1.86. Using my optimization algorithm 
+with 5 global iterations, 2 hybridization iterations per global iteration, a scale factor of 0.2, and a best subset of 5, produces a matrix with an objective function score of 2.0. The changes from BLOSUM50 are as follows:
+(('A', 'R'), -10.125)
+(('A', 'N'), -5.0625)
+(('A', 'D'), -10.125) 
 
 
 \subsection{Improvements to MATIO}
-The MATIO matrix starts out with an objective function score of [], 
+The MATIO matrix starts out with an objective function score of 1.52. Using my optimization algorithm 
+with 5 global iterations, 2 hybridization iterations per global iteration, a scale factor of 0.2, and a best subset of 5, produces a matrix with an objective function score that is actually only {\it worse} than the original, at 1.0. Changing the iteration parameters across a range of different values did not change this, and makes me think that there may be something in my implementation that prevents the optimization algorithm from having the desired effect, both with MATIO and with the BLOSUM50 matrix in that the score never improves beyond 2.0 even when using more iterations.
 
+\subsection{Discussion}
+In general, for an improved matrix to have enough utility to potentially have an impact on the field, we would need to show that the metric by which it had improved was relevant to an open question. In this case, our objective function measures separability of two subsets of pairings that have been previously defined as ``True'' and ``False'' pairings. One metric that people searching databases might care about would be the ability to find similarity that directly correlates to functionality, like specific protein folds or motifs. Another would be the ability to penalize exact repeats less than other gaps, given the biological frequence of duplications in otherwise related sequences. 
 
 
 \section{Github Repository}
