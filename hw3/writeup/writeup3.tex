@@ -58,11 +58,15 @@ First, a note! I realized at this point that I had likely misinterpreted how gap
 \subsection{Optimization Algorithm}
 
 For my optimization algorithm, I implemented a variation on a genetic algorithm, with two phases. Starting with a given base matrix and a scale factor (aka stepsize) along with the static positive and negative alignment pairs, in the first phase we create a library of matrices where each character pairing in the matrix is increased/decreased by the scale factor. Then the resulting library is screened against the positive and negative alignment pairs, and the subset (size chosen by user) with the highest objective function score is selected for hybridization in the second phase. For hybridization, a new matrix is created for every possible pair of matrices in the chosen subset and inherits the list of changes from the base matrix from both of its progenitor matrices. Then the hybrid matrices are screened and the best subset chosen, and the process repeated for the specified number of hybridization iterations per global iteration (aka number of phase two iterations for each phase one).
-\par One drawback to this method is that the changes are always inherited as a single block--one single ``chromosome'', in effect, with no crossing over. One could imagine a model where only some of the changes from each parent were transmitted, in a manner that still allowed for the total number of changes to increase or decrease. Also, in the current implementation, the step size is constant throughout the procedure; methods such as simulated annealing strongly suggest that the step size should decrease as the number of iterations increases, to allow the optimization to settle into the maximum instead of bouncing around it.
+\par One drawback to this method is that the changes are always inherited as a single block: as one single ``chromosome'', in effect, with no crossing over. One could imagine a model where only some of the changes from each parent were transmitted, in a manner that still allowed for the total number of changes to increase or decrease. Also, in the current implementation, the step size is constant throughout the procedure; methods such as simulated annealing strongly suggest that the step size should decrease as the number of iterations increases, to allow the optimization to settle into the maximum instead of bouncing around it.
 
 \subsection{Improvements to BLOSUM50}
+The BLOSUM50 matrix starts out with an objective function score of []. Using my optimization algorithm ...
+Repeating it with 10 global rounds, 3 merge iterations for each global round, a scale factor of 0.2, and a best subset size of 10 matricies also notably resulted in a best matrix with a score of only 2.0 out of 4. 
+
 
 \subsection{Improvements to MATIO}
+The MATIO matrix starts out with an objective function score of [], 
 
 
 

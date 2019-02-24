@@ -71,18 +71,18 @@ if args.F == True: # batch analysis
     new_score_matrix = modify_scoring_matrix(matrix,-4,1)
     # traceback=True makes the names in the score tuples into the full
     # alignment sequences
-    pos_scores = align_pairs(pos_pair_seqs,new_score_matrix,traceback=True)
-    neg_scores = align_pairs(neg_pair_seqs,new_score_matrix,traceback=True)
+    pos_scores = align_pairs(pos_pair_seqs[:15],new_score_matrix,traceback=True)
+    neg_scores = align_pairs(neg_pair_seqs[:15],new_score_matrix,traceback=True)
     pos_alignments = [ (q,t) for s,q,t in pos_scores ]
     neg_alignments = [ (q,t) for s,q,t in neg_scores ]
     opt_matrix,changes = optimize(new_score_matrix,pos_alignments,neg_alignments,best_cutoff=5,
-                            step_frac=0.3,total_iterations=5,merge_iterations=2)
+                            step_frac=0.2,total_iterations=3,merge_iterations=2)
 
-    write_matrix('optimized_matrix',opt_matrix,changes=changes,
-                        base_matrix_name='BLOSUM50 with -4,1 gap penalties')
-    print(opt_matrix)
-    print()
-    print(changes)
+    # write_matrix('optimized_matrix',opt_matrix,changes=changes,
+    #                     base_matrix_name='MATIO with -4,1 gap penalties')
+    # print(opt_matrix)
+    # print()
+    # print(changes)
 
 
 else: # single analysis

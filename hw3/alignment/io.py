@@ -125,8 +125,7 @@ def write_matrix(filename,matrix,changes='',base_matrix_name=''):
     out.write(header)
     for char1 in index:
         for char2 in index:
-            out.write(matrix[(char1,char2)]+'  ')
+            out.write(str(matrix[(char1,char2)])+'  ')
         out.write("\n")
     out.write("\n")
     out.close()
-            

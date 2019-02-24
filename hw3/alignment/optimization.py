@@ -27,7 +27,10 @@ def create_matrix_library(base_matrix,upreg=True,step_frac=0.5):
     for pair in amino_acid_combinations:
         new_matrix = base_matrix.copy()
         old_score = new_matrix[pair]
-        new_score = old_score*(1.0+step_frac) if upreg == True else old_score*step_frac
+        if old_score == 0:
+            new_score = old_score+step_frac if upreg == True else old_score-step_frac
+        else:
+            new_score = old_score*(1.0+step_frac) if upreg == True else old_score*step_frac
         new_matrix[pair] = new_score
         new_matrix[pair[::-1]] = new_score
         library.append((new_matrix,[(pair,new_score)]))
@@ -74,7 +77,7 @@ def merge_iteration(base_matrix,results_list,pos_align,neg_align,best_cutoff=3):
             best_merged = best_merged[np.argsort(-best_merged[:,0])] #sort by score
     best_merged_changes = [(score,merged_library[i][1]) for score,i in best_merged]
     print("Best Merged Weights:")
-    for p in best_merged_changes:
+    for p in best_merged_changes[:3]:
         print(p)
     return best_merged_changes # returns [(score,changes),...]
 
@@ -98,10 +101,10 @@ def updown_iteration(upreg_library,downreg_library,pos_align,neg_align,
     best_upreg_changes = [(score,upreg_library[i][1]) for score,i in best_upreg]
     best_downreg_changes = [(score,downreg_library[i][1]) for score,i in best_downreg]
     print("Best Increased Weights:")
-    for p in best_upreg_changes:
+    for p in best_upreg_changes[:3]:
         print(p)
     print("Best Decreased Weights:")
-    for p in best_downreg_changes:
+    for p in best_downreg_changes[:3]:
         print(p)
 
     return best_upreg_changes,best_downreg_changes
@@ -126,7 +129,11 @@ def optimize(score_matrix,pos_alignments,neg_alignments,best_cutoff=3,
     """"""
     score = 0
     matrix = score_matrix
+    base_score = test_matrix_scores(matrix,pos_alignments,neg_alignments)
+    print("Pre-Optimization Score:",base_score)
+
     for i in range(total_iterations):
+        print('-',i)
         upreg_library = create_matrix_library(matrix,upreg=True)
         downreg_library = create_matrix_library(matrix,upreg=False)
 
@@ -147,7 +154,9 @@ def optimize(score_matrix,pos_alignments,neg_alignments,best_cutoff=3,
 
         matrix,changes = apply_matrix_changes(matrix,best_changes[0][1])
         score = best_changes[0][0]
-        print('-',i)
+
+    print("Original Score:",base_score)
+    print("Optimized Matrix Score:",score)
     return matrix,changes
 
 

@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1550997016 "writeup3.tex" "writeup3.pdf" "writeup3" 1550997017
+["pdflatex"] 1551028075 "writeup3.tex" "writeup3.pdf" "writeup3" 1551028075
   "../ROC.png" 1550899029 41665 8cb18d5c9581a67f6ad18b070e2e4f98 ""
   "../ROC_Normalized.png" 1550900566 34845 76abf82a6552c5ae9c4d75df84b16f3d ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
@@ -58,11 +58,11 @@
   "/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1523934492 2717033 f61a5287d9c22a39a74f1979fe3f905c ""
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1523934516 4220280 10cab8fbd7c5a7c52aba9917e190d018 ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
-  "writeup3.aux" 1550997017 1787 61932ecc13a4aa5a98c05357f44f3d09 ""
-  "writeup3.out" 1550997017 774 2e7615b6c23a1aefffa03a2dbc243eee ""
-  "writeup3.tex" 1550997014 8948 58cca526ec7ced623cd707ba36e9ea7b ""
+  "writeup3.aux" 1551028075 1787 61932ecc13a4aa5a98c05357f44f3d09 ""
+  "writeup3.out" 1551028075 774 2e7615b6c23a1aefffa03a2dbc243eee ""
+  "writeup3.tex" 1551028071 8949 9a671741386fe29d2c583cbe2cddf4c9 ""
   (generated)
+  "writeup3.out"
   "writeup3.aux"
   "writeup3.pdf"
   "writeup3.log"
-  "writeup3.out"
