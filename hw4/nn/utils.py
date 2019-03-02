@@ -17,7 +17,7 @@ class Layer:
     Node4     3.2     2.4    0.03
     """
 
-    def __init__(self, n_nodes, n_inputs
+    def __init__(self, n_nodes, n_inputs,
                     layer_bias=None,
                     activation_function=None,
                     act_fn_name=None):
@@ -33,13 +33,18 @@ class Layer:
         #use xavier initialization because:
         # https://www.quora.com/What-are-good-initial-weights-in-a-neural-network
         # and https://stackoverflow.com/questions/48641192/xavier-and-he-normal-initialization-difference
-        arr = np.random.randn(n_nodes,n_inputs) * np.sqrt(1/n_inputs)
+        arr = np.random.randn(n_inputs,n_nodes) * np.sqrt(1/n_inputs)
         self.wts = arr
 
     # Overload the __repr__ operator to make printing simpler.
     def __repr__(self):
         #make list so "array()" not printed!
-        return ([ [node_wts] for node_wts in self.wts ],bias,self.f_name)
+        lines = []
+        for node in self.wts:
+            lines.append( str([ round(e,5) for e in node ]) )
+        lines.append("Bias: %s" % self.b)
+        lines.append("Activation Function: %s" % self.f_name)
+        return "\n".join(lines)
 
     def get_node(self, i):
         if i >= len(self.wts):
@@ -69,7 +74,7 @@ class Layer:
         Output: np.array of the activation values from each neuron, given the input
         """
         return
-    return
+
 
 
 # use a lambda instead of this and 'global sigmoid' in create_layer
@@ -110,6 +115,19 @@ class NeuralNetwork:
         self.x = inputs_x
         self.y = true_results_y
 
+    def __repr__(self):
+        #much easier to read printing version
+        lines = []
+        lines.append("x: %s" % self.x)
+        lines.append("y: %s" % self.y)
+        lines.append("Layers:")
+        for i,layer in enumerate(self.layers):
+            lines.append("%s -" %i)
+            lines.append(layer.__repr__())
+        return "\n".join(lines)
+
+
+
     def feedforward():
         """implements feeding forward through the whole network"""
         return
@@ -117,5 +135,3 @@ class NeuralNetwork:
     def backpropagate():
         """implements backpropagating error and updating weights through the whole network"""
         return
-
-    return
