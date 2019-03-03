@@ -24,8 +24,29 @@ def test_layer_feedforward(n_nodes, n_inputs, x, weights, raw_answer):
     ff_output = l.feedforward_layer(x)
     assert (ff_output == l.f(raw_answer)).all()
 
-# for a static set of starting weights, input, and output, test that the
-# calculation of the errors in the first round of learning is as we expect
+
+## TODO: convert to pytest form:
+
+def test_feedforward_results():
+    sig = lambda z: 1/(1+np.exp(-z))
+    mini_net = NeuralNetwork([2,2,1],[1,0],[2])
+    input = np.array([1,0])
+    weights_1 = np.array([[0.4,0.6],[0.9,0.1]])
+    weights_2 = np.array([[0.45,0.55]])
+    mini_net.layers[0].set_weights_arr(weights_1)
+    mini_net.layers[1].set_weights_arr(weights_2)
+    ff1 = sig(np.matmul(weights_1,input))
+    ff1_real = mini_net.layers[0].feedforward_layer(input)
+    ff2 = sig(np.matmul(weights_2,ff1))
+    ff2_real = mini_net.layers[1].feedforward_layer(ff1_real)
+    full_ff_real = mini_net.feedforward()
+
+
+    print("Expected Feedforward 1:",np.matmul(weights_1,np.array([1,0])),ff1)
+    print("Actual Feedforward 1:",ff1_real)
+    print("Expected Feedforward 2:",np.matmul(weights_2,ff1),ff2)
+    print("Actual Feedforward 2:",ff2_real)
+    print("NeuralNetwork level FF:",full_ff_real)
 
 
 

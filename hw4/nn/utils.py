@@ -61,7 +61,8 @@ class Layer:
         if array.shape == self.wts.shape or change_dimensions_okay == True:
             self.wts = array
         else:
-            raise ValueError("Dimensions Mismatch with self.wts disallowed")
+            raise ValueError("Dimensions Mismatch with self.wts disallowed: \
+                    %s self vs %s input" % (self.wts.shape,array.shape))
 
 
     def set_node_weights(self,node_i,weights_vector):
@@ -85,27 +86,6 @@ class Layer:
         """
         neuron_outputs = np.matmul(self.wts,input_values)
         return self.f(neuron_outputs) #apply AF to outputs
-
-
-
-# use a lambda instead of this and 'global sigmoid' in create_layer
-# def sigmoid(z):
-#     return 1 / (1 + np.exp(-z))
-
-# def create_layer(n_nodes,n_inputs,bias=0):
-#     """
-#     Initializes a Layer of the given dimensions with xavier-normalized
-#     random weights and a sigmoid activation function.
-#     - Alter someday to support non-sigmoidal nodes...
-#     - There's also a world where this should be part of the layer intialization
-#     """
-#     #use xavier initialization because:
-#     # https://www.quora.com/What-are-good-initial-weights-in-a-neural-network
-#     # and https://stackoverflow.com/questions/48641192/xavier-and-he-normal-initialization-difference
-#     arr = np.random.randn(n_nodes,n_inputs) * np.sqrt(1/n_inputs)
-#     #use bias at zero by default because:
-#     #https://datascience.stackexchange.com/questions/17987/how-should-the-bias-be-initialized-and-regularized
-#     return Layer(arr,bias,lambda z: 1/(1+np.exp(-z)),"sigmoidal")
 
 
 def loss(y,true_y):
@@ -143,10 +123,15 @@ class NeuralNetwork:
 
 
 
-    def feedforward():
+    def feedforward(self,new_input=None):
         """implements feeding forward through the whole network"""
-        return
+        #allow but don't require passing in new inputs, copy so we don't alter
+        input = np.copy(new_input) if new_input != None else np.copy(self.x)
+        for layer in self.layers:
+            input = layer.feedforward_layer(input)
+        return input
 
-    def backpropagate():
+
+    def backpropagate(self):
         """implements backpropagating error and updating weights through the whole network"""
         return
