@@ -55,11 +55,19 @@ class Layer:
     def get_dim(self):
         return self.wts.shape
 
+    def set_weights_arr(self,array,change_dimensions_okay=False):
+        """Replaces the weights array with the given array. Does not allow
+        the new array to be a different shape unless the optional arg is True"""
+        if array.shape == self.wts.shape or change_dimensions_okay == True:
+            self.wts = array
+        else:
+            raise ValueError("Dimensions Mismatch with self.wts disallowed")
+
 
     def set_node_weights(self,node_i,weights_vector):
         """Sets weights of a single node in the layer to the given values"""
         if len(self.wts[0]) != len(weights_vector):
-            raise ValueError("Dimension mismatch between self.wts and input")
+            raise ValueError("Dimension Mismatch between self.wts and input")
         else:
             for j in range(len(weights_vector)):
                 self.wts[i][j] = weights_vector[j]
@@ -68,12 +76,15 @@ class Layer:
     def feedforward_layer(self,input_values):
         """
         Calculates the vector of outputs from the whole layer for a given
-        input vector
+        input vector:
+
+        activation_function(W0x0 + W1x1 + W2x2 + ...)  for each node in layer
 
         Input: array-like of values, same length as the layer's number of cols
         Output: np.array of the activation values from each neuron, given the input
         """
-        return
+        neuron_outputs = np.matmul(self.wts,input_values)
+        return self.f(neuron_outputs) #apply AF to outputs
 
 
 
@@ -96,6 +107,10 @@ class Layer:
 #     #https://datascience.stackexchange.com/questions/17987/how-should-the-bias-be-initialized-and-regularized
 #     return Layer(arr,bias,lambda z: 1/(1+np.exp(-z)),"sigmoidal")
 
+
+def loss(y,true_y):
+    """Returns half the square of the Euclidean distance between y and true_y"""
+    return ( np.abs(true_y-y)^2 ) * 0.5
 
 
 class NeuralNetwork:

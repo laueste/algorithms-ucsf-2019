@@ -1,3 +1,4 @@
 .DS_Store
 *__pycache__*
 hw1/test/__pycache__/test_algs.cpython-37-PYTEST.pyc
+hw2/test/__pycache__/*
