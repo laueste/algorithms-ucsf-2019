@@ -1,6 +1,61 @@
 # functions and classes to assist in featurization and training
+import numpy as np
 
 
+def word_encode(word):
+    """Turns a k-mer DNA word into a unique number by interpreting the sequence
+    as a number in base 4
+    """
+    bases = ['A','T','G','C']
+    index = 0
+    for i,bp in enumerate(word[::-1]):
+        index += (bases.index(bp) * (4**i))
+    return index
+
+def featurize_sequence(seq,word_len=1):
+    """Implement a more interesting/sophisticated featurization:
+    Try one-hot matrix featurization, decomposing the sequence into k-mer words
+    (which can be length 1) and returning a 2D array as the featurization
+    1 = 4
+    2 = 16
+    3 = 64
+    """
+    print(seq)
+    array = np.zeros((4**word_len,len(seq)-word_len+1))
+    for i in range(0,len(seq)-word_len+1):
+        word = seq[i:i+word_len]
+        index = word_encode(word)
+        array[index][i] = 1
+    print(array.flatten())
+    return array.flatten()
+
+def interpret_features(flattened_features,word_len=1):
+    """Turns a 1D array representing a featurized sequence into the sequence
+    of base pairs itself. Requires the original word length as input"""
+    bases = ['A','T','G','C']
+    sequence = ''
+    features = flattened_features.reshape(4**word_len,-1)
+    print(features)
+    for c in range(len(features[0])):
+        for r in range(len(features)):
+            f = features[r][c]
+            if f > 0.9:
+                row_index = str(np.base_repr(r,base=4)) #same digits as word_len
+                #since k-mers overlap by k-1, after the first k-mer you only
+                #ever need the LAST bp, aka last digit of row_index
+                if sequence == '':
+                    row_index = '0'*(word_len - len(row_index)) + row_index # add starting 0's as needed
+                    sequence = ''.join([ bases[int(i)] for i in row_index])
+                else:
+                    sequence += bases[int(row_index[-1])]
+    return sequence
+
+
+
+
+
+
+# NOT USED BUT INTERESTING CONCEPT MAYBE
 def basic_featurize_sequence(seq):
     """
     Implements super basic featurization where each sequence gets decomposed
@@ -16,24 +71,18 @@ def basic_featurize_sequence(seq):
     than high AT content (it will here only when A/T and G/C equally likely...)
 
     Input: DNA sequence as a string
-    Output: Dictionary of features as floating point numbers
+    Output: Array of floating point numbers, same length as input sequence
     """
-
-    return
-
-def featurize_sequence(seq):
-    """Implement a more interesting/sophisticated featurization?"""
-    return
-
-
-def stratify_training_data(train_data,n_classes,k_folds):
-    """
-    Implement creating the folds for K-fold stratified cross-validation
-
-    Inputs: the data (as a ???), [n_classes as an int], k_folds to create as an int
-    Outputs: an array of the input data set separated into K stratified folds
-    """
-    return
+    array = np.zeros(len(seq))
+    mapping = {
+        'A': 0.6,
+        'T': 0.2,
+        'C': 0.3,
+        'G': 0.9
+    }
+    for i,bp in enumerate(seq.upper()): #TODO whatever to upper is in python
+        array[i] = mapping[bp]
+    return array
 
 
 def scan_seq_sizes(window_size=8,start=0,stop=-1):
