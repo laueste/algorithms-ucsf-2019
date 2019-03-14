@@ -1,6 +1,24 @@
 # functions and classes to assist in featurization and training
 import numpy as np
 
+def reverse_complement(seq):
+    """returns the reverse complement of the input DNA sequence"""
+    rc = ''
+    for bp in seq.upper():
+        if bp == 'A':
+            rc = 'T'+rc
+        if bp == 'T':
+            rc = 'A'+rc
+        if bp == 'G':
+            rc = 'C'+rc
+        if bp == 'C':
+            rc = 'G'+rc
+    return rc
+
+def hamming_distance(seqA,seqB):
+    A = np.array([ord(bp) for bp in seqA])
+    B = np.array([ord(bp) for bp in seqB])
+    return np.count_nonzero(A!=B)
 
 def word_encode(word):
     """Turns a k-mer DNA word into a unique number by interpreting the sequence

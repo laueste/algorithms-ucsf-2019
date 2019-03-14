@@ -1,8 +1,9 @@
 # functions to read in transcription factor sequence data from given files,
-# also includes the filtering functions for the negative data, despite that
+# also includes the preprocessing functions for the negative data, despite that
 # not exactly being "io"
 import numpy as np
 import os
+from .utils import reverse_complement
 
 def read_seqs(filepath):
     """
@@ -55,31 +56,21 @@ def parse_negatives_fasta(filepath):
     return seqs
 
 
-
-# TODO: how do we need to handle the reverse complements of all these inputs?
-# Do we WANT to catch rev comps of hits? Start with NOT doing so...
-
-
-
 def filter_pos_hits(pos_hits_list,list_to_be_filtered):
     """Return all elements of the second list that do not appear in the first"""
     pos_set = set(pos_hits_list)
     input_set = set(list_to_be_filtered)
     difference = input_set.difference(pos_set)
     return np.array(list(difference))
-    # filtered_hits = np.zeros(list_to_be_filtered) #initialize at max length to save time
-    # counter = 0 #how long is the filtered list actually
-    # for i in range(len(list_to_be_filtered)):
-    #     s = list_to_be_filtered[i]
-    #     if s not in pos_hits_list:
-    #         filtered_hits[i] = s
-    #         counter += 1
-    # return filtered_hits[:counter].copy() #return array reduced to actual size of contents
 
 
 def make_negatives_file(fasta_filepath,pos_filepath):
     """Write a file of negative 17-bp sequences using the input fasta array"""
     raw_negative_seqs = parse_negatives_fasta(fasta_filepath)
+    all_negative_seqs = raw_negative_seqs + [ reverse_complement(s) for s in raw_negative_seqs ]
+    print('raw',len(raw_negative_seqs))
+    print('with rev comp',len(all_negative_seqs))
     pos_hits = read_seqs(pos_filepath)
-    filtered = filter_pos_hits(pos_hits,raw_negative_seqs)
+    filtered = filter_pos_hits(pos_hits,all_negative_seqs)
+    print('filtered',len(filtered))
     write_seqs("./data/rap1-lieb-constructed-negatives.txt",filtered)
