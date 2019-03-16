@@ -2,7 +2,6 @@
 from nn import utils,encoder
 import pytest
 
-
 # test that 12345678 -> 12345678 within error of 0.5,0.1
 @pytest.mark.parametrize("iterations,error_margin",
 [(5000,0.5),(10000,0.1)]) #going to higher iterations takes longer than useful here

@@ -80,42 +80,12 @@ def test_backpropagation(layer_sizes,inputs,outputs,weights_0,weights_1,b0,b1,al
     test_net.backpropagate()
     # these are good to 4 decimal places but not after...
     assert round(backprop['new_L0'][0][0],6) == round(test_net.layers[0].wts[0][0],6)
-    #assert backprop['new_L0'][0][1] == test_net.layers[0].wts[0][1]
-    #assert backprop['new_L0'][1][0] == test_net.layers[0].wts[1][0]
-    #assert backprop['new_L0'][1][1] == test_net.layers[0].wts[1][1]
+    assert round(backprop['new_L0'][0][1],6) == round(test_net.layers[0].wts[0][1],6)
+    assert round(backprop['new_L0'][1][0],6) == round(test_net.layers[0].wts[1][0],6)
+    assert round(backprop['new_L0'][1][1],6) == round(test_net.layers[0].wts[1][1],6)
 
     # these have more error because they compound the error from above...
-    #assert backprop['new_L1'][0][0] == test_net.layers[1].wts[0][0]
-    #assert backprop['new_L1'][0][1] == test_net.layers[1].wts[0][1]
-    #assert backprop['new_L1'][1][0] == test_net.layers[1].wts[1][0]
-    #assert backprop['new_L1'][1][1] == test_net.layers[1].wts[1][1]
-
-
-
-## TODO: convert to pytest form:
-
-# def test_feedforward_results():
-#     sig = lambda z: 1/(1+np.exp(-z))
-#     mini_net = utils.NeuralNetwork([2,2,1],[1,0],[2])
-#     input = np.array([1,0])
-#     weights_1 = np.array([[0.4,0.6],[0.9,0.1]])
-#     weights_2 = np.array([[0.45,0.55]])
-#     mini_net.layers[0].b = 1 #change bias from zero so we can test it
-#     mini_net.layers[0].set_weights_arr(weights_1)
-#     mini_net.layers[1].set_weights_arr(weights_2)
-#     ff1 = sig(np.matmul(weights_1,input) + 1)
-#     ff1_real = mini_net.layers[0].feedforward_layer(input)
-#     ff2 = sig(np.matmul(weights_2,ff1))
-#     ff2_real = mini_net.layers[1].feedforward_layer(ff1_real)
-#     full_ff_real = mini_net.feedforward()
-#
-#
-#     print("Expected Feedforward 1:",sig(np.array([1*0.4+0*0.6, 1*0.9+0*0.1])+1),ff1)
-#     print("Actual Feedforward 1:",ff1_real)
-#     print("Expected Feedforward 2:",np.matmul(weights_2,ff1),ff2)
-#     print("Actual Feedforward 2:",ff2_real)
-#     print("NeuralNetwork level FF:",full_ff_real)
-
-
-
-# ... what else do we test about an NN?
+    assert round(backprop['new_L1'][0][0],6) == round(test_net.layers[1].wts[0][0],6)
+    assert round(backprop['new_L1'][0][1],6) == round(test_net.layers[1].wts[0][1],6)
+    assert round(backprop['new_L1'][1][0],6) == round(test_net.layers[1].wts[1][0],6)
+    assert round(backprop['new_L1'][1][1],6) == round(test_net.layers[1].wts[1][1],6)

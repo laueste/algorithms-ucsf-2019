@@ -5,7 +5,7 @@ import numpy as np
 import os
 from .utils import reverse_complement
 
-def read_seqs(filepath):
+def read_seqs(filepath,randomize=False):
     """
     Read in sequences from a text file of newline-delimited sequences
     Input: file path as string
@@ -15,6 +15,8 @@ def read_seqs(filepath):
     with open(filepath,"r") as f:
         for line in f:
             seqs.append(line.strip().upper())
+    if randomize == True:
+        np.random.shuffle(seqs)
     return seqs
 
 def write_seqs(filepath,seqs):

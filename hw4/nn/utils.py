@@ -99,6 +99,7 @@ class NeuralNetwork:
     """
     # TODO implement sparsity ^rho in cost function??
     def __init__(self,layer_sizes,inputs_x,true_results_y,alpha=1.0,wd=0.001):
+        np.random.seed(314159) # set single random seed for Neural Network class! Thanks Miriam and Taylor
         # housekeeping for good behavior when testing multiple sets of inputs
         self.x = array_sanitize(inputs_x) #enforces 2D structure even for only one input set
         self.y = array_sanitize(true_results_y)
@@ -206,14 +207,14 @@ class NeuralNetwork:
         grad_weights= np.array([ np.zeros(l.wts.shape) for l in self.layers ])
         grad_biases = np.array([ np.zeros(l.b.shape) for l in self.layers ])
 
-        # initialize array to hold deltas for nodes in each layer, get outer delta
+        # initialize array to hold deltas for nodes in each layer
         deltas = np.array([ np.zeros(len(l.wts)) for l in self.layers ])
 
         # accumulate partial derivatives for every input set
         for output,activation,true_y in zip(outputs,activations,true_ys):
 
             # calculate delta and partial derivatives for output layer
-            delta_outer = np.multiply( (output-true_y),( output*(1-output) ))
+            delta_outer = np.multiply( (output-true_y),(output*(1-output)) )
             grad_weights[-1] += np.array([activation[-2]])*np.array([delta_outer]).T #cast 1D as 2D to ensure proper multiplication
             grad_biases[-1] += delta_outer
             deltas[-1] = delta_outer

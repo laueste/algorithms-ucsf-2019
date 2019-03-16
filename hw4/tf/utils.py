@@ -38,13 +38,11 @@ def featurize_sequence(seq,word_len=1):
     2 = 16
     3 = 64
     """
-    print(seq)
     array = np.zeros((4**word_len,len(seq)-word_len+1))
     for i in range(0,len(seq)-word_len+1):
         word = seq[i:i+word_len]
         index = word_encode(word)
         array[index][i] = 1
-    print(array.flatten())
     return array.flatten()
 
 def interpret_features(flattened_features,word_len=1):
